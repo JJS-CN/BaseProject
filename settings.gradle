@@ -1,0 +1,10 @@
+rootProject.name = "BookRead"
+include ':app'
+include ':common_core'
+include ':module_base'
+include ':module_moments'
+include ':library_bugly'
+include ':common_demo'
+include ':library_analytics'
+include ':library_share'
+include ':module_user'

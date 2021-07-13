@@ -1,0 +1,8 @@
+apply from: "$rootDir/simplelib.gradle"
+android {
+
+}
+
+dependencies {
+    implementation project(':module_base')
+}

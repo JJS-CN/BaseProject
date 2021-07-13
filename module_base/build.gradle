@@ -1,0 +1,11 @@
+apply from: "$rootDir/simplemodule.gradle"
+android {
+
+
+}
+
+dependencies {
+    api project(':common_core')
+    api project(':library_analytics')
+
+}

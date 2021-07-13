@@ -1,0 +1,8 @@
+apply from: "$rootDir/simplelib.gradle"
+
+android {
+}
+
+dependencies {
+    implementation "com.tencent.bugly:crashreport_upgrade:1.5.23"
+}
