@@ -1,0 +1,14 @@
+apply from: "$rootDir/simplelib.gradle"
+
+android {
+}
+
+dependencies {
+    implementation project(':common_core')
+    // glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation 'com.github.bumptech.glide:okhttp3-integration:4.11.0'
+    // 查看大图
+    api 'com.github.SherlockGougou:BigImageViewPager:androidx-6.1.6'
+}

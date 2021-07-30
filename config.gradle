@@ -7,10 +7,12 @@ ext {
 
     ]
     version = [
-            arouterVersion  : "1.5.2",
-            lifecycleVersion: "2.3.1",
-            coilVersion     : "1.2.2",
-            roomVersion     : "2.3.0",
+            arouterVersion   : "1.5.2",
+            ComponentVersion : "v1.9.0-androidx-java8-Stable2",
+            lifecycleVersion : "2.3.1",
+            coilVersion      : "1.2.2",
+            roomVersion      : "2.3.0",
+            navigationVersion: "2.4.0-alpha04",
     ]
 
     dependencies = [
@@ -22,11 +24,15 @@ ext {
             "cardview"                  : 'androidx.cardview:cardview:1.0.0',
             "annotation"                : 'androidx.annotation:annotation:1.2.0',
             "recyclerview"              : 'androidx.recyclerview:recyclerview:1.2.0',
+            "swiperefreshlayout"        : 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0',
             "constraintlayout"          : 'androidx.constraintlayout:constraintlayout:2.0.4',
             "coordinatorlayout"         : "androidx.coordinatorlayout:coordinatorlayout:1.1.0",
+
+            "navigation-fragment"       : "androidx.navigation:navigation-fragment-ktx:${version["navigationVersion"]}",
+            "navigation-ui"             : "androidx.navigation:navigation-ui-ktx:${version["navigationVersion"]}",
             /**功能库 **/
             //分页
-            "paging"                    : "androidx.paging:paging-runtime:3.0.0",
+            "paging"                    : "androidx.paging:paging-runtime-ktx:3.0.0",
             //本地数据库
             "room-runtime"              : "androidx.room:room-runtime:${version["roomVersion"]}",
             "room-ktx"                  : "androidx.room:room-ktx:${version["roomVersion"]}",
@@ -42,6 +48,10 @@ ext {
 
 
             //第三方框架
+            "permissionx"               : "com.permissionx.guolindev:permissionx:1.4.0",
+            "BRVAH"                     : 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.6',
+            //向xml中附加shape自定义标签属性 https://github.com/JavaNoober/BackgroundLibrary/wiki
+            "BackgroundLibrary"         : 'com.github.JavaNoober.BackgroundLibrary:libraryx:1.7.2',
             //MMKV基于mmap的高性能kv存储 https://github.com/Tencent/MMKV
             "mmkv"                      : 'com.tencent:mmkv-static:1.2.10',
             //沉浸式状态栏 https://github.com/Zackratos/UltimateBarX
@@ -63,22 +73,33 @@ ext {
             "compressor"                : "id.zelory:compressor:3.0.1",
             //图片裁剪库 https://github.com/Yalantis/uCrop
             "ucrop"                     : "com.github.yalantis:ucrop:2.2.6",
+            //图片选择库 https://github.com/LuckSiege/PictureSelector/ 此框架包含photoView和Luban和uCrop
+            "pictureselector"           : "io.github.lucksiege:pictureselector:v2.7.3-rc06",
 
             //加载中占位骨架
             "broccoli"                  : "me.samlss:broccoli:1.0.0",
 
-            //dialog https://github.com/kongzue/DialogX
+            //dialog需要5.0，并且正在开发中，不是很稳定 https://github.com/kongzue/DialogX
             "DialogX"                   : "com.github.kongzue.DialogX:DialogX:0.0.39",
+            //basePopup  https://github.com/razerdp/BasePopup
+            "BasePopup"                 : "io.github.razerdp:BasePopup:3.1.0",
 
-            //图片选择库
-            "matisse"                   : "com.zhihu.android:matisse:0.5.2-beta2",
+
             //组件化路由
+            //Component https://github.com/xiaojinzi123/Component/wiki
+            "Component"                 : "com.github.xiaojinzi123.Component:component-impl-ktx:${version["ComponentVersion"]}",
+            "Component-compiler"        : "com.github.xiaojinzi123.Component:component-compiler:${version["ComponentVersion"]}",
+            "Component-plugin"          : "com.github.xiaojinzi123.Component:component-plugin:${version["ComponentVersion"]}",
             //如果新增路由出问题InstantRun support error，debug运行需要卸载重装！！！！！！！！！！！！！！！！！！
             "arouter-api"               : "com.alibaba:arouter-api:${version["arouterVersion"]}",
             "arouter-compiler"          : "com.alibaba:arouter-compiler:${version["arouterVersion"]}",
             //网络请求
             "retrofit2"                 : "com.squareup.retrofit2:retrofit:2.9.0",
             "converter-gson"            : "com.squareup.retrofit2:converter-gson:2.9.0",
+            /*"converter-moshi"           : "com.squareup.retrofit2:converter-moshi:2.9.0",
+            "moshi-kotlin-codegen"      : "com.squareup.moshi:moshi-kotlin-codegen:1.12.0",
+            "moshi-kotlin"              : "com.squareup.moshi:moshi-kotlin:1.12.0",*/
+
             "converter-serialization"   : "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0",
             "okhttp-bom"                : "com.squareup.okhttp3:okhttp-bom:4.9.1",
 

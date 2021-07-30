@@ -15,23 +15,22 @@ import okhttp3.OkHttpClient
  *  Create by jsji on  2021/7/2.
  */
 object CoilManager {
-    fun init(app: Application, placeholderId: Int) {
-        val imageLoader = ImageLoader.Builder(app)
-            .crossfade(true)
-            .okHttpClient {
-                OkHttpClient.Builder()
-                    .cache(CoilUtils.createDefaultCache(app))
-                    .build()
-            }
-            .placeholder(placeholderId)
-            .componentRegistry {
-                if (Build.VERSION.SDK_INT >= 28) {
-                    add(ImageDecoderDecoder(app))
-                } else {
-                    add(GifDecoder())
-                }
-            }
-            .build()
-        Coil.setImageLoader(imageLoader)
-    }
+  fun init(app: Application) {
+    val imageLoader = ImageLoader.Builder(app)
+      .crossfade(true)
+      .okHttpClient {
+        OkHttpClient.Builder()
+          .cache(CoilUtils.createDefaultCache(app))
+          .build()
+      }
+      .componentRegistry {
+        if(Build.VERSION.SDK_INT >= 28) {
+          add(ImageDecoderDecoder(app))
+        } else {
+          add(GifDecoder())
+        }
+      }
+      .build()
+    Coil.setImageLoader(imageLoader)
+  }
 }

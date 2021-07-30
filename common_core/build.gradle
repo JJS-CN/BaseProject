@@ -11,6 +11,7 @@ dependencies {
     api rootProject.ext.dependencies["material"]
     api rootProject.ext.dependencies["cardview"]
     api rootProject.ext.dependencies["recyclerview"]
+    api rootProject.ext.dependencies["swiperefreshlayout"]
     api rootProject.ext.dependencies["constraintlayout"]
     api rootProject.ext.dependencies["coordinatorlayout"]
     //lifecycle系列
@@ -21,8 +22,11 @@ dependencies {
     api rootProject.ext.dependencies["paging"]
     api rootProject.ext.dependencies["liveDataBus"]
 
+    api rootProject.ext.dependencies["navigation-fragment"]
+    api rootProject.ext.dependencies["navigation-ui"]
+
     //阿里路由组件
-    api rootProject.ext.dependencies["arouter-api"]
+    api rootProject.ext.dependencies["Component"]
 
     api rootProject.ext.dependencies["kotlinx-coroutines-android"]
 
@@ -37,15 +41,20 @@ dependencies {
     api rootProject.ext.dependencies["autosize"]
     api rootProject.ext.dependencies["coil"]
     api rootProject.ext.dependencies["coil_gif"]
-    api rootProject.ext.dependencies["compressor"]
-    api rootProject.ext.dependencies["ucrop"]
+    //感觉可以单独出去，无需要的就不用引入 pictureselector集成了luban和ucrop和photoView
+    //api rootProject.ext.dependencies["compressor"]
+    //api rootProject.ext.dependencies["ucrop"]
+    api rootProject.ext.dependencies["pictureselector"]
 
     api rootProject.ext.dependencies["ultimatebarx"]
     api rootProject.ext.dependencies["mmkv"]
     api rootProject.ext.dependencies["broccoli"]
-    api rootProject.ext.dependencies["DialogX"]
+    api rootProject.ext.dependencies["BasePopup"]
     api rootProject.ext.dependencies["tbssdk"]
 
+    api rootProject.ext.dependencies["BackgroundLibrary"]
+    api rootProject.ext.dependencies["BRVAH"]
+    api rootProject.ext.dependencies["permissionx"]
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

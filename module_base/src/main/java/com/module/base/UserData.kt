@@ -19,19 +19,19 @@ package com.module.base
  *  Create by jsji on  2021/7/5.
  */
 data class UserData(val uid: String,
-                    val hasFillBaseInfo: Boolean,
+                    var hasFillBaseInfo: Boolean,
                     var token: String,
-                    var expireTime: Long,
-                    var refreshExpireTime: Long,
-                    var refreshToken: String) {
-  //当前时间是否超出refresh有效时间
+                    var refreshToken: String,
+                    var imId: String,
+                    var imToken: String) {
+ /* //当前时间是否超出refresh有效时间
   fun isOutSideRefreshTime(): Boolean {
     return System.currentTimeMillis() / 1000 > refreshExpireTime
   }
 
   //当前时间是否超出refresh有效时间
   fun isOutSideTokenTime(): Boolean {
-    return System.currentTimeMillis() / 1000 > expireTime
-  }
+    return System.currentTimeMillis() / 1000 + 60 > expireTime
+  }*/
 
 }

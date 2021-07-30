@@ -14,8 +14,8 @@ import com.google.gson.Gson
 import com.module.base.manager.YtUserManager
 import com.module.base.network.SERVICE_TYPE
 import com.module.base.network.SignUtil
-import com.module.base.network.TokenService
-import com.module.base.router.ARouteAction
+import com.module.base.network.BasicService
+import com.module.base.router.RouteAction
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
@@ -40,6 +40,7 @@ open class BaseDataSource<Api : Any>(
   RemoteExtendDataSource<Api>(iActionEvent, apiServiceClass) {
   // TODO: 2021/7/5  需要暴露单独实例化获取apiservice的方法或能力，以便在不同module中实例化接口文件进行管理
   companion object {
+    val gson = Gson()
     public val httpClient: OkHttpClient by lazy {
       createHttpClient()
     }
@@ -72,14 +73,31 @@ open class BaseDataSource<Api : Any>(
               val formBody = originalRequest.body as FormBody
               // 先复制原来的参数
               for(i in 0 until formBody.size) {
-                map[formBody.encodedName(i)] = formBody.encodedValue(i)
+                if(formBody.name(i).endsWith("[]")) {
+                  val key = formBody.name(i).replaceFirst("[]", "")
+                  //数组类型
+                  val cache = map[key]
+                  if(cache == null) {
+                    //没建数据类，新建后添加
+                    val list = ArrayList<Any>()
+                    list.add(formBody.value(i))
+                    map[key] = list
+                  } else {
+                    //直接添加
+                    cache as ArrayList<Any>
+                    cache.add(formBody.value(i) as Any)
+                  }
+                } else {
+                  //其他类型，直接加入
+                  map[formBody.name(i)] = formBody.value(i)
+                }
               }
               val body: RequestBody =
-                Gson().toJson(map).toRequestBody("application/json;charset=utf-8".toMediaType())
+                gson.toJson(map).toRequestBody("application/json;charset=utf-8".toMediaType())
               builder = originalRequest.newBuilder().post(body)
             } else {
               val body: RequestBody =
-                Gson().toJson(map).toRequestBody("application/json;charset=utf-8".toMediaType())
+                gson.toJson(map).toRequestBody("application/json;charset=utf-8".toMediaType())
               builder = originalRequest.newBuilder().post(body)
             }
 
@@ -92,7 +110,7 @@ open class BaseDataSource<Api : Any>(
             builder = originalRequest.newBuilder().url(httpBuilder.build())
           }
           //处理签名sign
-          var nwtime: Int = 0
+          var nwtime: Int
           lateinit var sign: String
           val baseUrlName = originalRequest.header(CallFactoryProxy.NAME_BASE_URL_KEY)
           if(baseUrlName != null) {
@@ -104,8 +122,8 @@ open class BaseDataSource<Api : Any>(
             sign = SignUtil.getTimeSign(nwtime)
           }
           //添加请求头
-          YtUserManager.getUserBody()?.let { builder.header("x-auth-uid", it.uid) };//uid
-          YtUserManager.getUserBody()?.let { builder.header("x-access-token", it.token) };//token
+          YtUserManager.getUserBody().uid?.let { builder.header("x-auth-uid", it) };//uid
+          YtUserManager.getUserBody().token?.let { builder.header("x-access-token", it) };//token
           builder.header("x-auth-sign", sign)//签名认证（md5:32位16进制小写string）
           builder.header("nwtime", nwtime.toString())//当前时间戳，用于签名认证（10位）
           builder.header("app", AppUtils.getAppPackageName())//包名
@@ -115,7 +133,7 @@ open class BaseDataSource<Api : Any>(
           builder.header("platform", "android")//平台 ( "android"或"iphone"或"ipad" )
           builder.header(
             "version",
-            AppUtils.getAppVersionName().replace("[^0-9]".toRegex(), "")
+            AppUtils.getAppVersionName().replace("[^0-9.]".toRegex(), "")
           )//版本
           builder.header("version-code", AppUtils.getAppVersionCode().toString())//版本号
           builder.header("channel", MetaDataUtils.getMetaDataInApp("UMENG_CHANNEL"))//渠道
@@ -144,43 +162,27 @@ open class BaseDataSource<Api : Any>(
 
       val bodyString = buffer?.clone()?.readString(charset)
       val response = Gson().fromJson(bodyString, BaseResponse::class.java)
-      if(response.httpCode == -99) {
-        if(YtUserManager.getUserBody()?.isOutSideRefreshTime() == true) {
-          //这里认为是token过期，需要用户重新登录，需要发一个通知
-          YtUserManager.clearUser()
-          ARouteAction.User.launchLoginActivity()
-          return false
-        }
-      } else {
+      if(response?.httpCode == -99) {
         //这里认为是token失效，需要进行token刷新判断
         try {
-          val s = BaseDataSource<TokenService>(null, TokenService::class.java)
-            .execute({ refreshToken(YtUserManager.getUserBody()?.refreshToken) })
-
+          val s = BaseDataSource<BasicService>(null, BasicService::class.java)
+            .execute({ refreshToken(YtUserManager.getUserBody().refreshToken) })
           val userData = YtUserManager.getUserBody()
-          userData?.let {
+          userData.let {
             it.token = s.token
-            it.expireTime = s.expireTime
-            if(s.refreshToken.isNotEmpty()) {
-              it.refreshToken = s.refreshToken
-              it.refreshExpireTime = s.refreshExpireTime
-            }
             YtUserManager.putUserBody(it)
             return true
           }
         } catch(e: Exception) {
           if(e is ServerCodeBadException) {
+            //刷新token失效就清除数据
             YtUserManager.clearUser()
-            ARouteAction.User.launchLoginActivity()
+            RouteAction.User.launchReLoginActivity()
           }
         }
       }
       return false
     }
-
-
-    //定义Headers中所使用的拼接字段
-    //const val HEADER_NAME_USER = CallFactoryProxy.NAME_BASE_URL_KEY + ":" + "USER"
 
   }
 
@@ -191,7 +193,6 @@ open class BaseDataSource<Api : Any>(
     return Retrofit.Builder()
       .client(httpClient)
       .baseUrl(baseUrl)
-      //.addConverterFactory(RxGsonConverterFactory.create())
       .callFactory(object : CallFactoryProxy(httpClient) {
         override fun getNewUrl(baseUrlName: String?, request: Request?): HttpUrl? {
           if(baseUrlName != null) {

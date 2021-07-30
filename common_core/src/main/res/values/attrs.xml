@@ -1,19 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <declare-styleable name="ShapeView" tools:ignore="ResourceName">
+        <attr name="drawableCenter" format="boolean" />
+        <attr name="touchSolidColor" format="color" />
+        <attr name="solidColor" format="color" />
+        <attr name="cornerRadius" format="dimension" />
+        <attr name="topLeftRadius" format="dimension" />
+        <attr name="topRightRadius" format="dimension" />
+        <attr name="bottomLeftRadius" format="dimension" />
+        <attr name="bottomRightRadius" format="dimension" />
+        <attr name="stroke_Width" format="dimension" />
+        <attr name="stroke_Color" format="color" />
+        <attr name="gradient_startColor" format="color" />
+        <attr name="gradient_centerColor" format="color" />
+        <attr name="gradient_endColor" format="color" />
+        <attr name="gradient_Orientation">
+            <enum name="TOP_BOTTOM" value="0" />
+            <enum name="TR_BL" value="1" />
+            <enum name="RIGHT_LEFT" value="2" />
+            <enum name="BR_TL" value="3" />
+            <enum name="BOTTOM_TOP" value="4" />
+            <enum name="BL_TR" value="5" />
+            <enum name="LEFT_RIGHT" value="6" />
+            <enum name="TL_BR" value="7" />
+        </attr>
+        <attr name="strokeDashWidth" format="dimension" />
+        <attr name="strokeDashGap" format="dimension" />
+        <attr name="touchTextColor" format="color"></attr>
+        <attr name="enableColor" format="color"></attr>
+        <attr name="enableTextColor" format="color"></attr>
+        <attr name="shapeType">
+            <enum name="LINEAR_GRADIENT" value="0" />
+            <enum name="OVAL" value="1" />
+            <enum name="LINE" value="2" />
+            <enum name="RING" value="3" />
+        </attr>
 
-    <style name="common_core_title_centerView_style">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:layout_marginLeft">58dp</item>
-        <item name="android:layout_marginRight">58dp</item>
-        <item name="android:textColor">#222222</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:ellipsize">end</item>
-    </style>
+    </declare-styleable>
 
-    <style name="common_core_title_bar_style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">38dp</item>
-        <item name="android:background">#FFFFFF</item>
-    </style>
 </resources>

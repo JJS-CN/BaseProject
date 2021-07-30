@@ -1,0 +1,10 @@
+apply from: "$rootDir/simplelib.gradle"
+android {
+
+}
+
+dependencies {
+    //implementation project(':module_base')
+    api 'com.netease.nimlib:basesdk:8.5.1'
+    api 'com.netease.nimlib:chatroom:8.5.1'
+}

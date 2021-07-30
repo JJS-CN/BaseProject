@@ -1,0 +1,9 @@
+apply from: "$rootDir/simplelib.gradle"
+android {
+
+}
+
+dependencies {
+    //implementation project(':module_base')
+    api 'com.github.zegolibrary:express-audio:2.9.0'
+}

@@ -18,7 +18,7 @@ interface IUIActionEvent : ICoroutineEvent {
 
   fun dismissLoading()
 
-  fun showToast(msg: String)
+  fun showToast(msg: String?)
 
   fun finishView()
 
@@ -46,7 +46,7 @@ interface IViewModelActionEvent : IUIActionEvent {
     showToast(Utils.getApp().getString(resId))
   }
 
-  override fun showToast(msg: String) {
+  override fun showToast(msg: String?) {
     showToastEventLD.value = ShowToastEvent(msg)
   }
 
@@ -102,7 +102,7 @@ interface IUIActionEventObserver : IUIActionEvent {
       this@IUIActionEventObserver.dismissLoading()
     })
     viewModel.showToastEventLD.observe(lLifecycleOwner, Observer {
-      if(it.message.isNotBlank()) {
+      if(it.message?.isNotBlank() == true) {
         this@IUIActionEventObserver.showToast(it.message)
       }
     })

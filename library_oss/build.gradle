@@ -1,0 +1,8 @@
+apply from: "$rootDir/simplelib.gradle"
+
+android {
+}
+dependencies {
+    implementation project(':common_core')
+    implementation 'com.aliyun.dpa:oss-android-sdk:2.9.6'// 必选
+}

@@ -1,8 +1,9 @@
 package com.common.core.ui
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -17,6 +18,7 @@ import com.blankj.utilcode.util.ToastUtils
 import com.common.core.R
 import com.common.core.network.viewmodel.IUIActionEventObserver
 import com.common.core.network.viewmodel.IViewModelActionEvent
+import com.zackratos.ultimatebarx.ultimatebarx.UltimateBarX
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import java.lang.reflect.ParameterizedType
@@ -27,39 +29,51 @@ import java.lang.reflect.ParameterizedType
  *  Create by jsji on  2021/6/30.
  */
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IUIActionEventObserver {
+  companion object {
+    var defaultBackgroundColor: Int? = Color.parseColor("#FBF4E8")
+  }
+
   protected lateinit var binding: VB
 
   //是否需要自动添加titlebar，同时将自动处理返回值
   protected var needAutoTitleBar = true
-  //protected var needSwipeRefresh = true
-  //protected var swipeRefresh: SwipeRefreshLayout? = null
+  protected var backgroundColor: Int? = null
 
   @Suppress("UNCHECKED_CAST")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    if(backgroundColor != null) {
+      window.decorView.findViewById<View>(android.R.id.content)
+        .setBackgroundColor(backgroundColor!!)
+    } else if(defaultBackgroundColor != null) {
+      window.decorView.findViewById<View>(android.R.id.content)
+        .setBackgroundColor(defaultBackgroundColor!!)
+    }
     bindingView(javaClass)
 
   }
 
-  fun bindingView(clazz: Class<*>) {
-    println("bindingView: 开始尝试解析：$clazz")
+  @Suppress("UNCHECKED_CAST")
+  private fun bindingView(clazz: Class<*>) {
+    println("bindingActivity: 开始尝试解析：$clazz")
     if(clazz is BaseActivity<*>) {
-      println("bindingView: 此class为Base,return")
+      println("bindingActivity: 此class为Base,return")
       return
     }
     try {
       val superclass = clazz.genericSuperclass
       val aClass = (superclass as ParameterizedType).actualTypeArguments[0] as Class<*>
+      println("bindingActivity: 获取到对应binding准备处理：$aClass")
       val method = aClass.getDeclaredMethod(
         "inflate",
         LayoutInflater::class.java
       )
       binding = method.invoke(null, layoutInflater) as VB
-      println("bindingView: 解析成功：$clazz")
+      println("bindingActivity: 解析成功：$clazz")
       setContentView(getRootView())
     } catch(e: Exception) {
       if(e is ClassCastException) {
-        println("bindingView: ClassCastException错误，尝试遍历superclass")
+        println("bindingActivity: ClassCastException错误，尝试遍历superclass")
         bindingView(clazz.superclass)
       } else {
         e.printStackTrace()
@@ -89,6 +103,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IUIActionEv
     super.setContentView(rootView)
     initView()
     beforeInitView()
+    refreshView()
     initData()
   }
 
@@ -118,6 +133,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IUIActionEv
   }
 
   open fun initData() {}
+  open fun refreshView() {}
 
 
   //网络请求相关
@@ -146,8 +162,8 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IUIActionEv
     //swipeRefresh!!.isRefreshing = false
   }
 
-  override fun showToast(msg: String) {
-    if(msg.isNotBlank()) {
+  override fun showToast(msg: String?) {
+    if(msg?.isNotBlank() == true) {
       ToastUtils.showShort(msg)
     }
   }

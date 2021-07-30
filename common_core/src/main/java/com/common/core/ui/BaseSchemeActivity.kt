@@ -91,7 +91,6 @@ abstract class BaseSchemeActivity : BaseActivity<CommonCoreLayoutFrameEmptyBindi
   fun openUrlInApp(uri: Uri) {
     //打开app内部浏览器
     val webUrl = uri.getQueryParameter("url")
-    val title = uri.getQueryParameter("title")
     if(webUrl.isNullOrEmpty()) {
       return
     }

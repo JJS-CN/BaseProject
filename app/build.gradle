@@ -2,22 +2,24 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'com.xiaojinzi.component.plugin'
 }
 kapt {
     arguments {
-        arg("AROUTER_MODULE_NAME", project.getName())
+        arg("HOST", project.getName())
     }
 }
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.example.bookread"
+        applicationId "com.read.bookclub"
         minSdkVersion rootProject.ext.android.minSdkVersion
 
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        //前3位版本号，后3位提测版本号
+        versionCode 100000
+        versionName "1.0.0"
         multiDexEnabled = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {
@@ -45,10 +47,12 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
+            shrinkResources false
             signingConfig signingConfigs.config
         }
         release {
             minifyEnabled true
+            zipAlignEnabled true  //压缩优化
             shrinkResources true
             signingConfig signingConfigs.config
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -69,9 +73,9 @@ android {
 
 dependencies {
     implementation project(':module_base')
-    implementation project(':module_user')
     implementation project(path: ':library_bugly')
+    implementation project(path: ':library_oss')
     implementation project(path: ':library_share')
-    kapt rootProject.ext.dependencies["arouter-compiler"]
+    kapt rootProject.ext.dependencies["Component-compiler"]
 
 }

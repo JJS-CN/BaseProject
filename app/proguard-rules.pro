@@ -26,9 +26,11 @@
 # 抛出异常时保留代码行号，在异常分析中可以方便定位
 -keepattributes SourceFile,LineNumberTable
 #----------------------------------------------------------------------------
+#----------------------Android通用-----------------
 
-#---------------------------------默认保留区---------------------------------
+# 避免混淆Android基本组件，下面是兼容性比较高的规则
 -keep public class * extends android.app.Activity
+-keep public class * extends android.app.Fragment
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
@@ -36,71 +38,157 @@
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
 -keep public class * extends android.view.View
--keep class android.support.** {*;}
+-keep public class com.android.vending.licensing.ILicensingService
 
-# 保留所有的本地 native 方法不被混淆
--keepclasseswithmembernames class * {
-    native <methods>;
-}
-# 保留在 Activity 中的方法参数是 view 的方法，
-# 从而我们在 layout 里面编写 onClick 就不会被影响
+# 保留support下的所有类及其内部类
+-keep class android.support.** {*;}
+-keep interface android.support.** {*;}
+-keep public class * extends android.support.v4.**
+-keep public class * extends android.support.v7.**
+-keep public class * extends android.support.annotation.**
+-dontwarn android.support.**
+
+# 保留androidx下的所有类及其内部类
+-keep class androidx.** {*;}
+-keep public class * extends androidx.**
+-keep interface androidx.** {*;}
+-keep class com.google.android.material.** {*;}
+-dontwarn androidx.**
+-dontwarn com.google.android.material.**
+-dontnote com.google.android.material.**
+
+# 保持Activity中与View相关方法不被混淆
 -keepclassmembers class * extends android.app.Activity{
-    public void *(android.view.View);
+        public void *(android.view.View);
 }
-# 枚举类不能被混淆
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
+
+# 避免混淆所有native的方法,涉及到C、C++
+-keepclasseswithmembernames class * {
+        native <methods>;
 }
-# 保留自定义控件（继承自 View）不被混淆
+
+# 避免混淆自定义控件类的get/set方法和构造函数
 -keep public class * extends android.view.View{
-    *** get*();
-    void set*(***);
-    public <init>(android.content.Context);
-    public <init>(android.content.Context, android.util.AttributeSet);
-    public <init>(android.content.Context, android.util.AttributeSet, int);
+        *** get*();
+        void set*(***);
+        public <init>(android.content.Context);
+        public <init>(android.content.Context,android.util.AttributeSet);
+        public <init>(android.content.Context,android.util.AttributeSet,int);
 }
 -keepclasseswithmembers class * {
-    public <init>(android.content.Context, android.util.AttributeSet);
-    public <init>(android.content.Context, android.util.AttributeSet, int);
+        public <init>(android.content.Context, android.util.AttributeSet);
+        public <init>(android.content.Context, android.util.AttributeSet, int);
 }
-# 保留 Parcelable 序列化的类不被混淆
+
+# 避免混淆枚举类
+-keepclassmembers enum * {
+        public static **[] values();
+        public static ** valueOf(java.lang.String);
+}
+
+# 避免混淆序列化类
+# 不混淆Parcelable和它的实现子类，还有Creator成员变量
 -keep class * implements android.os.Parcelable {
-  *;
+        public static final android.os.Parcelable$Creator *;
 }
-# 保留 Serializable 序列化的类不被混淆
--keep class * implements java.io.Serializable { *;}
+
+# 不混淆Serializable和它的实现子类、其成员变量
+-keep public class * implements java.io.Serializable {*;}
 -keepclassmembers class * implements java.io.Serializable {
-    static final long serialVersionUID;
-    private static final java.io.ObjectStreamField[] serialPersistentFields;
-    private void writeObject(java.io.ObjectOutputStream);
-    private void readObject(java.io.ObjectInputStream);
-    java.lang.Object writeReplace();
-    java.lang.Object readResolve();
+        static final long serialVersionUID;
+        private static final java.io.ObjectStreamField[] serialPersistentFields;
+        private void writeObject(java.io.ObjectOutputStream);
+        private void readObject(java.io.ObjectInputStream);
+        java.lang.Object writeReplace();
+        java.lang.Object readResolve();
 }
-# 对于 R（资源）下的所有类及其方法，都不能被混淆
--keep class **.R$* {
- *;
-}
-# 对于带有回调函数 onXXEvent 的，不能被混淆
+
+# 资源ID不被混淆
+-keep class **.R$* {*;}
+
+# 回调函数事件不能混淆
 -keepclassmembers class * {
-    void *(**On*Event);
+        void *(**On*Event);
+        void *(**On*Listener);
 }
 
--keepclassmembers class * {
-   public <init>(org.json.JSONObject);
-}
-
--keepattributes *JavascriptInterface*
-
-#----------------------------------------------------------------------------
-
-#---------------------------------webview------------------------------------
-
--keepclassmembers class * extends android.webkit.WebViewClient {
-    public void *(android.webkit.WebView, java.lang.String, android.graphics.Bitmap);
-    public boolean *(android.webkit.WebView, java.lang.String);
+# Webview 相关不混淆
+-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+   public *;
 }
 -keepclassmembers class * extends android.webkit.WebViewClient {
-    public void *(android.webkit.WebView, java.lang.String);
+        public void *(android.webkit.WebView, java.lang.String, android.graphics.Bitmap);
+        public boolean *(android.webkit.WebView, java.lang.String);
 }
+-keepclassmembers class * extends android.webkit.WebViewClient {
+        public void *(android.webkit.WebView, java.lang.String);
+ }
+
+# 使用GSON、fastjson等框架时，所写的JSON对象类不混淆，否则无法将JSON解析成对应的对象
+-keepclassmembers class * {
+         public <init>(org.json.JSONObject);
+}
+
+#不混淆泛型
+-keepattributes Signature
+
+#避免混淆注解类
+-dontwarn android.annotation
+-keepattributes *Annotation*
+
+#避免混淆内部类
+-keepattributes InnerClasses
+
+#（可选）避免Log打印输出
+-assumenosideeffects class android.util.Log {
+        public static *** v(...);
+        public static *** d(...);
+        public static *** i(...);
+        public static *** w(...);
+        public static *** e(...);
+}
+
+#kotlin 相关
+-dontwarn kotlin.**
+-keep class kotlin.** { *; }
+-keep interface kotlin.** { *; }
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}
+-keepclasseswithmembers @kotlin.Metadata class * { *; }
+-keepclassmembers class **.WhenMappings {
+    <fields>;
+}
+-assumenosideeffects class kotlin.jvm.internal.Intrinsics {
+    static void checkParameterIsNotNull(java.lang.Object, java.lang.String);
+}
+
+-keep class kotlinx.** { *; }
+-keep interface kotlinx.** { *; }
+-dontwarn kotlinx.**
+-dontnote kotlinx.serialization.SerializationKt
+
+-keep class org.jetbrains.** { *; }
+-keep interface org.jetbrains.** { *; }
+-dontwarn org.jetbrains.**
+
+# >>>>>>>>>>>>>>>----------实体类---------->>>>>>>>>>>>>>>
+#列子
+-keep class com.mirkowu.demo.bean.** {*;}
+-dontwarn com.mirkowu.demo.bean.**
+
+#native方法
+-keep class com.mirkowu.demo.jni.** {*;}
+-dontwarn com.mirkowu.demo.jni.**
+# <<<<<<<<<<<<<<<----------实体类----------<<<<<<<<<<<<<<<
+
+
+# >>>>>>>>>>>>>>>----------与js互相调用的类---------->>>>>>>>>>>>>>>
+
+# <<<<<<<<<<<<<<<----------与js互相调用的类----------<<<<<<<<<<<<<<<
+
+
+# >>>>>>>>>>>>>>>----------反射相关的类和方法---------->>>>>>>>>>>>>>>
+
+# <<<<<<<<<<<<<<<----------反射相关的类和方法----------<<<<<<<<<<<<<<<
+

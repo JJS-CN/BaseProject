@@ -39,14 +39,14 @@ class BaseWebViewActivity : BaseActivity<CommonCoreLayoutFrameEmptyBinding>() {
       .commitAllowingStateLoss()
   }
 
-  open fun createWebFragment(): BaseWebFragment {
+  fun createWebFragment(): BaseWebFragment {
     val webFragment = BaseWebFragment()
     webFragment.arguments = intent.extras
     return webFragment
   }
 
   override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-    if(webFragment.onKeyDown(keyCode, event)) {
+    if(webFragment.onKeyDown(keyCode)) {
       return true
     }
     return super.onKeyDown(keyCode, event)

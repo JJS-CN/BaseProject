@@ -11,3 +11,4 @@ local.properties
 *.keystore
 *.jks
 /fungolive.keystore
+/app/release/

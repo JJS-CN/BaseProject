@@ -2,7 +2,6 @@ package com.common.core.network.datasource
 
 import android.util.LruCache
 import com.common.core.network.callback.BaseRequestCallback
-import com.common.core.network.converter.RxGsonConverterFactory
 import com.common.core.network.coroutine.ICoroutineEvent
 import com.common.core.network.exception.BaseHttpException
 import com.common.core.network.exception.LocalBadException
@@ -12,7 +11,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -122,8 +120,8 @@ abstract class BaseRemoteDataSource<Api : Any>(
     }
     val exception = generateBaseExceptionReal(throwable)
     if(exceptionHandle(exception)) {
-      callback.onFailed?.invoke(exception)
-      if(callback.onFailToast()) {
+      callback.onError?.invoke(exception)
+      if(callback.needFailToast()) {
         val error = exceptionFormat(exception)
         if(error.isNotBlank()) {
           showToast(error)

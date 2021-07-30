@@ -15,7 +15,7 @@ class RequestCallback<Data>(
      * 当网络请求成功时会调用此方法，随后会先后调用 onSuccessIO、onFinally 方法
      * 为空时也应执行
      */
-    fun onSuccess(block: (data: Data) -> Unit) {
+    fun onSuccess(block: (data: Data?) -> Unit) {
         this.onSuccess = block
     }
 
@@ -25,7 +25,7 @@ class RequestCallback<Data>(
      * 注意外部不要在此处另开子线程，此方法会等到耗时任务完成后再执行 onFinally 方法
      * 为空时也应执行
      */
-    fun onSuccessIO(block: suspend (Data) -> Unit) {
+    fun onSuccessIO(block: suspend (Data?) -> Unit) {
         this.onSuccessIO = block
     }
 

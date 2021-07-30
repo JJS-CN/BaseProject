@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    tools:ignore="MissingConstraints">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="255dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="4dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginRight="12dp"
+                android:includeFontPadding="false"
+                android:text="提示"
+                android:textColor="#ff343639"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.noober.background.view.BLTextView
+                android:id="@+id/tv_deny"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:text="否"
+                android:textColor="#606468"
+                app:bl_corners_radius="4dp"
+                app:bl_solid_color="#D8D8D8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/tv_grant"
+                app:layout_constraintTop_toBottomOf="@id/tv_message" />
+
+            <com.noober.background.view.BLTextView
+                android:id="@+id/tv_grant"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:text="是"
+                android:textColor="#343639"
+                app:bl_corners_radius="4dp"
+                app:bl_solid_color="#FFC356"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/tv_deny"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_message"
+                app:layout_goneMarginLeft="12dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

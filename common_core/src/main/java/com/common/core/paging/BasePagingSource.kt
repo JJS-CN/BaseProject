@@ -5,7 +5,7 @@ import androidx.paging.*
 import kotlinx.coroutines.flow.Flow
 
 /**
- *  Class:
+ *  Class: 这鬼东西还有缓存？？？修改构造函数的时候建议clear项目！！
  *  Other:
  *  Create by jsji on  2021/7/5.
  */
@@ -28,16 +28,4 @@ abstract class BasePagingSource<Value : Any> : PagingSource<Int, Value>() {
   }
 
   abstract suspend fun loadCall(page: Int, size: Int): List<Value>
-
-
-  fun getPager(): Flow<PagingData<Value>> {
-    return getPager(10)
-  }
-
-  fun getPager(pageSize: Int): Flow<PagingData<Value>> {
-    return Pager(
-      config = PagingConfig(pageSize),
-      pagingSourceFactory = { this }
-    ).flow
-  }
 }

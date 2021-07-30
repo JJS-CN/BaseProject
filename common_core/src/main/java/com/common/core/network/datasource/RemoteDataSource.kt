@@ -33,6 +33,7 @@ abstract class RemoteDataSource<Api : Any>(
     )
   }
 
+  // TODO: 2021/7/28  无法在子线程启动！！！！！！！！！
   fun <Data> enqueue(
     apiFun: suspend Api.() -> IHttpWrapBean<Data>,
     showLoading: Boolean = false,
@@ -61,6 +62,47 @@ abstract class RemoteDataSource<Api : Any>(
         } catch(throwable: Throwable) {
           handleException(throwable, callback)
           return@launchMain
+        }
+        onGetResponse(callback, response.httpData)
+      } finally {
+        try {
+          callback?.onFinally?.invoke()
+        } finally {
+          if(showLoading) {
+            dismissLoading()
+          }
+        }
+      }
+    }
+  }
+  fun <Data> enqueueG(
+    apiFun: suspend Api.() -> IHttpWrapBean<Data>,
+    showLoading: Boolean = false,
+    baseUrl: String = "",
+    callbackFun: (RequestCallback<Data>.() -> Unit)? = null
+  ): Job {
+    return launchMainG {
+      val callback = if(callbackFun == null) {
+        null
+      } else {
+        RequestCallback<Data>().apply {
+          callbackFun.invoke(this)
+        }
+      }
+      try {
+        if(showLoading) {
+          showLoading(coroutineContext[Job])
+        }
+        callback?.onStart?.invoke()
+        val response: IHttpWrapBean<Data>
+        try {
+          response = apiFun.invoke(getApiService(baseUrl))
+          if(!response.httpIsSuccess) {
+            throw ServerCodeBadException(response)
+          }
+        } catch(throwable: Throwable) {
+          handleException(throwable, callback)
+          return@launchMainG
         }
         onGetResponse(callback, response.httpData)
       } finally {

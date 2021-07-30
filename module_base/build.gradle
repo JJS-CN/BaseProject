@@ -7,5 +7,7 @@ android {
 dependencies {
     api project(':common_core')
     api project(':library_analytics')
-
+    api project(':library_zego')
+    api project(':library_netease')
+    api project(':library_imagedetail')
 }

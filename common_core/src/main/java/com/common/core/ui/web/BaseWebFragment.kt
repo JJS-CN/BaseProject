@@ -3,17 +3,11 @@ package com.common.core.ui.web
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import com.blankj.utilcode.util.ActivityUtils
-import com.blankj.utilcode.util.ToastUtils
-import com.common.core.R
 import com.common.core.databinding.CommonCoreFragmentWebviewBinding
 import com.common.core.manager.TBSManager
 import com.common.core.ui.BaseFragment
-import com.tencent.smtt.export.external.interfaces.WebResourceResponse
 import com.tencent.smtt.sdk.*
-import java.util.*
 
 /**
  *  Class:
@@ -21,8 +15,8 @@ import java.util.*
  *  Create by jsji on  2021/7/12.
  */
 class BaseWebFragment : BaseFragment<CommonCoreFragmentWebviewBinding>() {
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    super.onActivityCreated(savedInstanceState)
+  override fun initView() {
+    super.initView()
     initWebView()
     activity?.application?.let { TBSManager.init(it) }
     initHardwareAccelerate()
@@ -109,7 +103,7 @@ class BaseWebFragment : BaseFragment<CommonCoreFragmentWebviewBinding>() {
 
   }
 
-  fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+  fun onKeyDown(keyCode: Int): Boolean {
     //如果不做任何处理，浏览网页，点击系统“Back”键，整个Browser会调用finish()而结束自身，
     // 如果希望浏览的网 页回退而不是推出浏览器，需要在当前Activity中处理并消费掉该Back事件。
     if(keyCode == KeyEvent.KEYCODE_BACK && binding.web.canGoBack()) {

@@ -5,11 +5,9 @@ import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
 import com.blankj.utilcode.util.ActivityUtils
-import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.Utils
 import com.common.core.manager.MMKVManager
-import com.common.core.manager.ARouterManager
-import com.common.core.manager.TBSManager
+import com.common.core.manager.ComponentManager
 import com.common.core.manager.UUIDManager
 
 /**
@@ -25,7 +23,6 @@ open class BaseApplication : Application() {
 
   override fun onCreate() {
     super.onCreate()
-    ARouterManager.init(this)
     Utils.init(this)
     UUIDManager.initRomOAID(this)
     MMKVManager.init(this)

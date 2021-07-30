@@ -30,10 +30,10 @@ class FooterAdapter(val retryCallback: () -> Unit) :
     return holder
   }
 
-  override fun onBindViewHolder(holderPagingFoot: PagingFootViewHolder, loadState: LoadState) {
-    holderPagingFoot.llLoading.isVisible = loadState is LoadState.Loading
-    holderPagingFoot.llRetry.isVisible = loadState is LoadState.Error
-    holderPagingFoot.llNothing.isVisible = loadState is LoadState.NotLoading
+  override fun onBindViewHolder(holder: PagingFootViewHolder, loadState: LoadState) {
+    holder.llLoading.isVisible = loadState is LoadState.Loading
+    holder.llRetry.isVisible = loadState is LoadState.Error
+    holder.llNothing.isVisible = loadState is LoadState.NotLoading
   }
 
   override fun displayLoadStateAsItem(loadState: LoadState): Boolean {

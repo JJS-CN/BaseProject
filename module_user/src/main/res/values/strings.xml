@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="module_user_toast_error_phone_format">手机号码格式不正确</string>
-    <string name="module_user_toast_error_pwd_less6">密码不能小于6位数</string>
-    <string name="module_user_toast_error_captcha_empty">验证码不能为空</string>
-</resources>
