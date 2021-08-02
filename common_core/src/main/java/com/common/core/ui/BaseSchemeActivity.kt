@@ -1,19 +1,13 @@
 package com.common.core.ui
 
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
 import com.common.core.R
-import com.common.core.constants.SchemeConstants
+import com.common.core.constants.BaseSchemeActions
 import com.common.core.databinding.CommonCoreLayoutFrameEmptyBinding
 import com.common.core.ui.web.BaseWebViewActivity
-import com.tencent.smtt.utils.j
-import com.tencent.smtt.utils.o
 import java.lang.Exception
 
 
@@ -33,12 +27,12 @@ abstract class BaseSchemeActivity : BaseActivity<CommonCoreLayoutFrameEmptyBindi
     super.onCreate(savedInstanceState)
     val processed = baseDispatch(intent.data)
     dispatchAfter(processed)
-    try{
+    try {
       val contentView = (window.decorView as ViewGroup).getChildAt(0)
       contentView.setOnClickListener {
         finish()
       }
-    }catch(e:Exception){
+    } catch(e: Exception) {
       e.printStackTrace()
     }
   }
@@ -47,17 +41,22 @@ abstract class BaseSchemeActivity : BaseActivity<CommonCoreLayoutFrameEmptyBindi
   private fun baseDispatch(data: Uri?): Boolean {
     if(data != null) {
       println("SchemeDispatch: $data")
-      //处理默认提供的内容
-      when(data.authority) {
-        SchemeConstants.SCHEME_OPENURL_INAPP -> {
-          openUrlInApp(data)
-        }
-        SchemeConstants.SCHEME_OPENURL_INBROWSER -> {
-          openUrlInBrowser(data)
-        }
-        else -> {
-          //如果不在默认实现范围之内，交由外部实现处理
-          return dispatch(data)
+      //先交由外部实现处理
+      val isPatch = dispatch(data)
+      if(!isPatch) {
+        //处理默认提供的内容
+        val authority = data.authority
+        when(authority?.let { BaseSchemeActions.valueOf(it) }) {
+          BaseSchemeActions.openUrlInApp -> {
+            openUrlInApp(data)
+          }
+          BaseSchemeActions.openUrlInBrowser -> {
+            openUrlInBrowser(data)
+          }
+          else -> {
+            //如果不在默认实现范围之内
+            return isPatch
+          }
         }
       }
     } else {
@@ -77,7 +76,7 @@ abstract class BaseSchemeActivity : BaseActivity<CommonCoreLayoutFrameEmptyBindi
   }
 
   /***
-   * @return true:已处理
+   * @return true:已处理,不进行默认的网页判断，直接关闭activity
    */
   abstract fun dispatch(data: Uri): Boolean
 
@@ -88,7 +87,7 @@ abstract class BaseSchemeActivity : BaseActivity<CommonCoreLayoutFrameEmptyBindi
     setContentView(R.layout.common_core_layout_version_update)
   }
 
-  fun openUrlInApp(uri: Uri) {
+  open fun openUrlInApp(uri: Uri) {
     //打开app内部浏览器
     val webUrl = uri.getQueryParameter("url")
     if(webUrl.isNullOrEmpty()) {
@@ -97,10 +96,9 @@ abstract class BaseSchemeActivity : BaseActivity<CommonCoreLayoutFrameEmptyBindi
     //这里建议由外部重写
     BaseWebViewActivity.launch(this, webUrl)
 
-    //MoreActivity.start(this, title, content, url, iconUrl, "1" == share, "scheme")
   }
 
-  fun openUrlInBrowser(uri: Uri) {
+  open fun openUrlInBrowser(uri: Uri) {
     //打开外部浏览器
     val webUrl = uri.getQueryParameter("url")
     if(webUrl.isNullOrEmpty()) {

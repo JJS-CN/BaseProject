@@ -29,6 +29,7 @@ import java.lang.reflect.ParameterizedType
  *  Create by jsji on  2021/6/30.
  */
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IUIActionEventObserver {
+  // TODO: 2021/7/30 页面需要loading、error、nothing方法，但应该抽离出去，fragment可以复用
   companion object {
     var defaultBackgroundColor: Int? = Color.parseColor("#FBF4E8")
   }

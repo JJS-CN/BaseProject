@@ -1,7 +1,6 @@
 package com.module.base.network
 
-import com.common.core.network.base.CallFactoryProxy
-import com.module.base.BaseDataSource
+import com.common.core.network.base.BaseUrlCallFactory
 
 /**
  *  Class:
@@ -13,4 +12,4 @@ enum class SERVICE_TYPE(var baseUrl: String, val signKey: String) {
 
 }
 
-public const val SERVICE_NAME_USER = CallFactoryProxy.NAME_BASE_URL_KEY + ":" + "USER"
+public const val SERVICE_NAME_USER = BaseUrlCallFactory.NAME_BASE_URL_KEY_PREFIX + ":" + "USER"

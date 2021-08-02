@@ -7,7 +7,6 @@ import android.net.wifi.WifiManager
 import android.text.TextUtils
 import com.blankj.utilcode.util.DeviceUtils
 import com.blankj.utilcode.util.Utils
-import com.common.core.uuid.CryptoUtils
 import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
 

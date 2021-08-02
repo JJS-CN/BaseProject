@@ -34,7 +34,7 @@ class APP : BaseApplication() {
     CoilManager.init(this)
     NeteaseManager.config(
       this,
-      "58759ae2dcef3c741a8a9ab482b39be6",
+      "xxx",
       YtUserManager.userData.imId,
       YtUserManager.userData.imToken
     )

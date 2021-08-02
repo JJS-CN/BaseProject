@@ -7,7 +7,7 @@ package com.module.base
  */
 class APPConfig {
   //推流比特率
-  var bitrate = 43
+  var bitrate = 0
 
   override fun toString(): String {
     return "APPConfig(bitrate=$bitrate)"

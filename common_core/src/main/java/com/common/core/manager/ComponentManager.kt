@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import com.common.core.BuildConfig
-import com.common.core.router.ComponentRouterInjectable
+import com.common.core.router.InjectComponentRouter
 import com.xiaojinzi.component.Component
 import com.xiaojinzi.component.Config
 
@@ -31,7 +31,7 @@ object ComponentManager {
     );
     app.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
       override fun onActivityCreated(activity: Activity, p1: Bundle?) {
-        if(activity is ComponentRouterInjectable) {
+        if(activity is InjectComponentRouter) {
           ///注入参数
           Component.inject(activity)
         }

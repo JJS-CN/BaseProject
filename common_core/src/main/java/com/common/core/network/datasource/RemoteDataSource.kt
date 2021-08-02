@@ -3,11 +3,9 @@ package com.common.core.network.datasource
 import android.util.Log
 import com.common.core.network.bean.IHttpWrapBean
 import com.common.core.network.callback.RequestCallback
-import com.common.core.network.exception.BaseHttpException
-import com.common.core.network.exception.ServerCodeBadException
+import com.common.core.network.exception.ApiException
 import com.common.core.network.viewmodel.IUIActionEvent
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 /**
  * @Author: leavesC
@@ -20,149 +18,51 @@ abstract class RemoteDataSource<Api : Any>(
   apiServiceClass: Class<Api>
 ) : BaseRemoteDataSource<Api>(iUiActionEvent, apiServiceClass) {
   private val TAG = "RemoteDataSource"
-  fun <Data> enqueueLoading(
-    apiFun: suspend Api.() -> IHttpWrapBean<Data>,
-    baseUrl: String = "",
-    callbackFun: (RequestCallback<Data>.() -> Unit)? = null
-  ): Job {
-    return enqueue(
-      apiFun = apiFun,
-      showLoading = true,
-      baseUrl = baseUrl,
-      callbackFun = callbackFun
-    )
-  }
 
   // TODO: 2021/7/28  无法在子线程启动！！！！！！！！！
   fun <Data> enqueue(
     apiFun: suspend Api.() -> IHttpWrapBean<Data>,
-    showLoading: Boolean = false,
     baseUrl: String = "",
     callbackFun: (RequestCallback<Data>.() -> Unit)? = null
   ): Job {
-    return launchMain {
-      val callback = if(callbackFun == null) {
-        null
-      } else {
-        RequestCallback<Data>().apply {
-          callbackFun.invoke(this)
-        }
+    val callback = if(callbackFun == null) {
+      null
+    } else {
+      RequestCallback<Data>().apply {
+        callbackFun.invoke(this)
       }
+    }
+    val needRunGlobal = callback?.let { it.needRunGlobal() }
+    val scope = if(needRunGlobal == true) {
+      GlobalScope
+    } else {
+      lifecycleSupportedScope
+    }
+    return scope.launch {
+
+      val needLoading = callback?.let { it.needLoading() }
       try {
-        if(showLoading) {
-          showLoading(coroutineContext[Job])
+        if(needLoading == true) {
+          iUiActionEvent?.showLoading(coroutineContext[Job])
         }
         callback?.onStart?.invoke()
         val response: IHttpWrapBean<Data>
         try {
           response = apiFun.invoke(getApiService(baseUrl))
           if(!response.httpIsSuccess) {
-            throw ServerCodeBadException(response)
+            throw ApiException(response.httpCode, response.httpMsg)
           }
         } catch(throwable: Throwable) {
           handleException(throwable, callback)
-          return@launchMain
+          return@launch
         }
         onGetResponse(callback, response.httpData)
       } finally {
         try {
           callback?.onFinally?.invoke()
         } finally {
-          if(showLoading) {
-            dismissLoading()
-          }
-        }
-      }
-    }
-  }
-  fun <Data> enqueueG(
-    apiFun: suspend Api.() -> IHttpWrapBean<Data>,
-    showLoading: Boolean = false,
-    baseUrl: String = "",
-    callbackFun: (RequestCallback<Data>.() -> Unit)? = null
-  ): Job {
-    return launchMainG {
-      val callback = if(callbackFun == null) {
-        null
-      } else {
-        RequestCallback<Data>().apply {
-          callbackFun.invoke(this)
-        }
-      }
-      try {
-        if(showLoading) {
-          showLoading(coroutineContext[Job])
-        }
-        callback?.onStart?.invoke()
-        val response: IHttpWrapBean<Data>
-        try {
-          response = apiFun.invoke(getApiService(baseUrl))
-          if(!response.httpIsSuccess) {
-            throw ServerCodeBadException(response)
-          }
-        } catch(throwable: Throwable) {
-          handleException(throwable, callback)
-          return@launchMainG
-        }
-        onGetResponse(callback, response.httpData)
-      } finally {
-        try {
-          callback?.onFinally?.invoke()
-        } finally {
-          if(showLoading) {
-            dismissLoading()
-          }
-        }
-      }
-    }
-  }
-
-  fun <Data> enqueueOriginLoading(
-    apiFun: suspend Api.() -> Data,
-    baseUrl: String = "",
-    callbackFun: (RequestCallback<Data>.() -> Unit)? = null
-  ): Job {
-    return enqueueOrigin(
-      apiFun = apiFun,
-      showLoading = true,
-      baseUrl = baseUrl,
-      callbackFun = callbackFun
-    )
-  }
-
-  fun <Data> enqueueOrigin(
-    apiFun: suspend Api.() -> Data,
-    showLoading: Boolean = false,
-    baseUrl: String = "",
-    callbackFun: (RequestCallback<Data>.() -> Unit)? = null
-  ): Job {
-    return launchMain {
-      val callback = if(callbackFun == null) {
-        null
-      } else {
-        RequestCallback<Data>().apply {
-          callbackFun.invoke(this)
-        }
-      }
-      try {
-        if(showLoading) {
-          showLoading(coroutineContext[Job])
-        }
-        callback?.onStart?.invoke()
-        val response: Data
-        try {
-          response = apiFun.invoke(getApiService(baseUrl))
-        } catch(throwable: Throwable) {
-          handleException(throwable, callback)
-          return@launchMain
-        }
-        onGetResponse(callback, response)
-      } finally {
-        try {
-          callback?.onFinally?.invoke()
-        } finally {
-          if(showLoading) {
-            dismissLoading()
+          if(needLoading == true) {
+            iUiActionEvent?.dismissLoading()
           }
         }
       }
@@ -171,10 +71,12 @@ abstract class RemoteDataSource<Api : Any>(
 
   private suspend fun <Data> onGetResponse(callback: RequestCallback<Data>?, httpData: Data) {
     callback?.let {
-      withNonCancellable {
+      withContext(NonCancellable) {
         callback.onSuccess?.let {
-          withMain {
+          withContext(Dispatchers.Main) {
             //如果值为空，invoke动态代理将会报错。因为定义的success接收值中是非空的。
+            //所以在data可能为空、或者不关心回调内容时，需要设置BaseResponse<*> 、 BaseResponse<Any?>
+            //这里的* 和Any? 是一样的效果
             try {
               it.invoke(httpData)
             } catch(e: Exception) {
@@ -184,7 +86,7 @@ abstract class RemoteDataSource<Api : Any>(
           }
         }
         callback.onSuccessIO?.let {
-          withIO {
+          withContext(Dispatchers.IO) {
             try {
               //如果值为空，invoke动态代理将会报错。因为定义的success接收值中是非空的。
               it.invoke(httpData)
@@ -202,20 +104,22 @@ abstract class RemoteDataSource<Api : Any>(
    * 同步请求，可能会抛出异常，外部需做好捕获异常的准备
    * @param apiFun
    */
-  @Throws(BaseHttpException::class)
-  fun <Data> execute(apiFun: suspend Api.() -> IHttpWrapBean<Data>, baseUrl: String = ""): Data {
+  // TODO: 2021/8/1 这里最好包装以下，不然外部catch处理也麻烦，模板代码
+  @Throws(ApiException::class)
+  fun <Data> execute(apiFun: suspend Api.() -> IHttpWrapBean<Data>): Data {
     return runBlocking {
       try {
-        val asyncIO = asyncIO {
+
+        val asyncIO = lifecycleSupportedScope.async(Dispatchers.IO) {
           apiFun.invoke(getApiService(baseUrl))
         }
         val response = asyncIO.await()
         if(response.httpIsSuccess) {
           return@runBlocking response.httpData
         }
-        throw ServerCodeBadException(response)
+        throw ApiException(response.httpCode, response.httpMsg)
       } catch(throwable: Throwable) {
-        throw generateBaseExceptionReal(throwable)
+        throw throwable
       }
     }
   }

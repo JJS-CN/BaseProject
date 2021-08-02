@@ -5,6 +5,8 @@ import androidx.lifecycle.*
 import com.blankj.utilcode.util.Utils
 import com.common.core.network.coroutine.ICoroutineEvent
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 /**
  * @Author: leavesC
@@ -94,6 +96,9 @@ interface IUIActionEventObserver : IUIActionEvent {
     }
   }
 
+  /**
+   * 注册livedata的好处是，在未显示页面由于定时器等原因触发接口时，不会乱展示toast和loading给用户
+   */
   fun <VM> generateActionEvent(viewModel: VM) where VM : ViewModel, VM : IViewModelActionEvent {
     viewModel.showLoadingEventLD.observe(lLifecycleOwner, Observer {
       this@IUIActionEventObserver.showLoading(it.job)
@@ -102,7 +107,7 @@ interface IUIActionEventObserver : IUIActionEvent {
       this@IUIActionEventObserver.dismissLoading()
     })
     viewModel.showToastEventLD.observe(lLifecycleOwner, Observer {
-      if(it.message?.isNotBlank() == true) {
+      if(!it.message.isNullOrEmpty()) {
         this@IUIActionEventObserver.showToast(it.message)
       }
     })
