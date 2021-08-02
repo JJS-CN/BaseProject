@@ -32,12 +32,12 @@ class APP : BaseApplication() {
     super.onCreate()
     ComponentManager.init(this)
     CoilManager.init(this)
-    NeteaseManager.config(
+   /* NeteaseManager.config(
       this,
       "xxx",
       YtUserManager.userData.imId,
       YtUserManager.userData.imToken
-    )
+    )*/
     ActivityUtils.addActivityLifecycleCallbacks(object : Utils.ActivityLifecycleCallbacks() {
       override fun onActivityStarted(activity: Activity) {
         super.onActivityStarted(activity)

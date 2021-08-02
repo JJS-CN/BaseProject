@@ -31,7 +31,14 @@ class SplashActivity : BaseSplashActivity<ActivitySplashBinding>() {
     AppDataSource(null)
       .enqueue({ getAudioConf() }) {
         onSuccess {
-          Log.e("eeeeeee", "回调到了Success")
+          Log.e("eeeeeee", "回调到了Success: " + it.toString())
+        }
+        onError {
+          Log.e("eeeeeee", "回调到了onError: ")
+          it.printStackTrace()
+        }
+        onApiError {
+          Log.e("eeeeeee", "回调到了onApiError: ")
         }
       }
   }

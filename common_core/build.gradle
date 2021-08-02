@@ -34,7 +34,13 @@ dependencies {
     api("com.squareup.okhttp3:okhttp")
     api("com.squareup.okhttp3:logging-interceptor")
     api rootProject.ext.dependencies["retrofit2"]
+    //todo 如果服务器对应字段返回空，gson无法初始化默认值，这个需注意
     api rootProject.ext.dependencies["converter-gson"]
+
+    //todo moshi在BaseResponse<T> 时，无法对泛型T进行处理，所以仍使用Gson
+    //api rootProject.ext.dependencies["converter-moshi"]
+    //kapt rootProject.ext.dependencies["moshi-kotlin-codegen"]
+    //api rootProject.ext.dependencies["moshi-kotlin"]
 
     api rootProject.ext.dependencies["Android_CN_OAID"]
     api rootProject.ext.dependencies["utilcodex"]
@@ -59,8 +65,5 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
 }

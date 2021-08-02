@@ -2,7 +2,6 @@ package com.module.base.manager
 
 import android.text.TextUtils
 import android.util.Log
-import com.google.gson.Gson
 import com.library.netease.NeteaseManager
 import com.library.zego.ZegoManager
 import com.module.base.UserData
@@ -17,7 +16,7 @@ object YtUserManager {
   //保存用户信息
   private val MMKV_KEY_USER_BODY = "MMKV_KEY_USER_BODY"
   private lateinit var mmkv_user: MMKV
-  public lateinit var userData: UserData
+  /*public lateinit var userData: UserData
 
   init {
     mmkv_user = MMKV.mmkvWithID("User")
@@ -52,7 +51,7 @@ object YtUserManager {
 
   fun isLogin(): Boolean {
     return !getUserBody().uid.isNullOrEmpty()
-  }
+  }*/
 }
 
 

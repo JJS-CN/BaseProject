@@ -7,6 +7,7 @@ import android.net.wifi.WifiManager
 import android.text.TextUtils
 import com.blankj.utilcode.util.DeviceUtils
 import com.blankj.utilcode.util.Utils
+import com.common.core.extensions.toMd5lowercase
 import com.github.gzuliyujiang.oaid.DeviceID
 import com.github.gzuliyujiang.oaid.IGetter
 
@@ -52,7 +53,7 @@ object UUIDManager {
       }
 
       builder.append(device_id)
-      UUID_MD5 = CryptoUtils.MD5(builder.toString())
+      UUID_MD5 = builder.toString().toMd5lowercase()
     }
     return UUID_MD5 ?: ""
   }

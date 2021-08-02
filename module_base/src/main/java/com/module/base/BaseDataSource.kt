@@ -8,11 +8,7 @@ import com.common.core.network.base.BaseUrlCallFactory
 import com.common.core.network.viewmodel.IUIActionEvent
 import com.common.core.manager.UUIDManager
 import com.common.core.network.datasource.RemoteDataSource
-import com.common.core.network.ext.toParamsMap
-import com.google.gson.Gson
 import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.concurrent.TimeUnit
 
 
@@ -28,7 +24,6 @@ open class BaseDataSource<Api : Any>(
   RemoteDataSource<Api>(iActionEvent, apiServiceClass) {
   // TODO: 2021/7/5  需要暴露单独实例化获取apiservice的方法或能力，以便在不同module中实例化接口文件进行管理
   companion object {
-    val gson = Gson()
     public val httpClient: OkHttpClient by lazy {
       createHttpClient()
     }
@@ -57,7 +52,7 @@ open class BaseDataSource<Api : Any>(
           //map["token"] = "token"
           if("POST" == originalRequest.method) {
             //重新构建requestBody，应用json格式
-            if(originalRequest.body is FormBody) {
+            /*if(originalRequest.body is FormBody) {
               val formBody = originalRequest.body as FormBody
               // 先整理出apiService传递过来的参数
               //然后再进行公参的添加
@@ -69,8 +64,8 @@ open class BaseDataSource<Api : Any>(
               val body: RequestBody =
                 gson.toJson(map).toRequestBody("application/json;charset=utf-8".toMediaType())
               builder = originalRequest.newBuilder().post(body)
-            }
-
+            }*/
+            builder = originalRequest.newBuilder()
           } else {
             //GET请求，在url后拼接公参
             val httpBuilder: HttpUrl.Builder = originalRequest.url.newBuilder()
@@ -109,7 +104,7 @@ open class BaseDataSource<Api : Any>(
 
   override fun createCallFactory(): BaseUrlCallFactory {
     return super.createCallFactory().apply {
-      addServiceUrlPair("USER", "https://restapi1123.amap.com/")
+      addServiceUrlPair("USER", "https://restapi.amap.com/")
     }
   }
 

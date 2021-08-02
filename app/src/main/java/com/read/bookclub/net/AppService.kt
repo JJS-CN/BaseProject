@@ -18,5 +18,5 @@ interface AppService {
 
   @Headers(SERVICE_NAME_USER)
   @POST("/zego/audio_conf")
-  suspend fun getAudioConf(): BaseResponse<Any?>
+  suspend fun getAudioConf(): BaseResponse<APPConfig>
 }

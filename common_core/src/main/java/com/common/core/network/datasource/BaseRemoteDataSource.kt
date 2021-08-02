@@ -13,6 +13,7 @@ import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -68,7 +69,7 @@ abstract class BaseRemoteDataSource<Api : Any>(
         .client(defaultOkHttpClient)
         .baseUrl(baseUrl)
         .callFactory(callFactory)
-        .addConverterFactory(RxGsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create())
         .build()
     }
 

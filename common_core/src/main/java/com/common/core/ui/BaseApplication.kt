@@ -7,16 +7,13 @@ import androidx.multidex.MultiDex
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.Utils
 import com.common.core.manager.MMKVManager
-import com.common.core.manager.ComponentManager
 import com.common.core.manager.UUIDManager
-import dagger.hilt.android.HiltAndroidApp
 
 /**
  *  Class:
  *  Other:
  *  Create by jsji on  2021/6/30.
  */
-@HiltAndroidApp
 open class BaseApplication : Application() {
   override fun attachBaseContext(base: Context) {
     super.attachBaseContext(base)
