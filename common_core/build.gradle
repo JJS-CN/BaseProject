@@ -5,65 +5,74 @@ android {
 }
 dependencies {
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    api rootProject.ext.dependencies["core-ktx"]
-    api rootProject.ext.dependencies["multidex"]
+    api Deps.core_ktx
+    api Deps.multidex
+    api Deps.material
     //UI
-    api rootProject.ext.dependencies["material"]
-    api rootProject.ext.dependencies["cardview"]
-    api rootProject.ext.dependencies["recyclerview"]
-    api rootProject.ext.dependencies["swiperefreshlayout"]
-    api rootProject.ext.dependencies["constraintlayout"]
-    api rootProject.ext.dependencies["coordinatorlayout"]
+    api Deps.cardview
+    api Deps.recyclerview
+    api Deps.swiperefreshlayout
+    api Deps.constraintlayout
+    api Deps.coordinatorlayout
     //lifecycle系列
-    api rootProject.ext.dependencies["lifecycle-runtime-ktx"]
-    api rootProject.ext.dependencies["lifecycle-viewmodel-ktx"]
-    api rootProject.ext.dependencies["lifecycle-livedata-ktx"]
+    api Deps.lifecycle_runtime_ktx
+    api Deps.lifecycle_viewmodel_ktx
+    api Deps.lifecycleL_livedata_ktx
 
-    api rootProject.ext.dependencies["paging"]
-    api rootProject.ext.dependencies["liveDataBus"]
+    api Deps.paging
+    api Deps.liveDataBus
 
-    api rootProject.ext.dependencies["navigation-fragment"]
-    api rootProject.ext.dependencies["navigation-ui"]
+    api Deps.navigation_fragment_ktx
+    api Deps.navigation_ui_ktx
 
     //阿里路由组件
-    api rootProject.ext.dependencies["Component"]
+    api Deps.Component
 
-    api rootProject.ext.dependencies["kotlinx-coroutines-android"]
+    api Deps.kotlinx_coroutines_android
 
-    api(platform(rootProject.ext.dependencies["okhttp-bom"]))
+    api(platform(Deps.okhttp_bom))
     api("com.squareup.okhttp3:okhttp")
     api("com.squareup.okhttp3:logging-interceptor")
-    api rootProject.ext.dependencies["retrofit2"]
+    api Deps.retrofit2
     //todo 如果服务器对应字段返回空，gson无法初始化默认值，这个需注意
-    api rootProject.ext.dependencies["converter-gson"]
+    api Deps.converter_gson
 
     //todo moshi在BaseResponse<T> 时，无法对泛型T进行处理，所以仍使用Gson
-    //api rootProject.ext.dependencies["converter-moshi"]
-    //kapt rootProject.ext.dependencies["moshi-kotlin-codegen"]
-    //api rootProject.ext.dependencies["moshi-kotlin"]
+    //api Deps.converter-moshi
+    //kapt Deps.moshi-kotlin-codegen
+    //api Deps.moshi-kotlin
 
-    api rootProject.ext.dependencies["Android_CN_OAID"]
-    api rootProject.ext.dependencies["utilcodex"]
-    api rootProject.ext.dependencies["autosize"]
-    api rootProject.ext.dependencies["coil"]
-    api rootProject.ext.dependencies["coil_gif"]
+    api Deps.Android_CN_OAID
+    api Deps.utilcodex
+    api Deps.autosize
+    api Deps.coil
+    api Deps.coilGif
     //感觉可以单独出去，无需要的就不用引入 pictureselector集成了luban和ucrop和photoView
-    //api rootProject.ext.dependencies["compressor"]
-    //api rootProject.ext.dependencies["ucrop"]
-    api rootProject.ext.dependencies["pictureselector"]
+    //api Deps.compressor
+    //api Deps.ucrop
+    api Deps.pictureselector
 
-    api rootProject.ext.dependencies["ultimatebarx"]
-    api rootProject.ext.dependencies["mmkv"]
-    api rootProject.ext.dependencies["broccoli"]
-    api rootProject.ext.dependencies["BasePopup"]
-    api rootProject.ext.dependencies["tbssdk"]
+    api Deps.ultimatebarx
+    api Deps.mmkv
+    api Deps.broccoli
+    api Deps.BasePopup
+    api Deps.tbssdk
 
-    api rootProject.ext.dependencies["BackgroundLibrary"]
-    api rootProject.ext.dependencies["BRVAH"]
-    api rootProject.ext.dependencies["permissionx"]
+    api Deps.BackgroundLibrary
+    api Deps.BRVAH
+    api Deps.permissionx
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    api Deps.compose_ui
+    api Deps.compose_material
+    api Deps.compose_ui_tooling_preview
+    api Deps.compose_activity
+    api Deps.accompanist_coil
+
+    // UI 测试
+    androidTestApi Deps.compose_ui_test_junit4
+    debugApi Deps.compose_ui_tooling
 }

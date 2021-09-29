@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.view.*
-import com.common.core.databinding.CommonCoreFragmentWebviewBinding
 import com.common.core.manager.TBSManager
 import com.common.core.ui.BaseFragment
 import com.tencent.smtt.sdk.*
@@ -14,8 +13,8 @@ import com.tencent.smtt.sdk.*
  *  Other:
  *  Create by jsji on  2021/7/12.
  */
-class BaseWebFragment : BaseFragment<CommonCoreFragmentWebviewBinding>() {
-  override fun initView() {
+class BaseWebFragment : BaseFragment() {
+  /*override fun initView() {
     super.initView()
     initWebView()
     activity?.application?.let { TBSManager.init(it) }
@@ -127,5 +126,5 @@ class BaseWebFragment : BaseFragment<CommonCoreFragmentWebviewBinding>() {
     super.onDestroy()
     binding.root.removeAllViews()
     binding.web.destroy()
-  }
+  }*/
 }

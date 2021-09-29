@@ -7,14 +7,13 @@ import android.content.Intent
 import android.os.Build
 import android.view.View
 import com.common.core.ui.BaseActivity
-import com.drawable.library.databinding.LibraryImagedetailActivityPhotoDetailsBinding
 
 /**
  *  Class:
  *  Other:
  *  Create by jsji on  2021/7/29.
  */
-class PhotoDetailsActivity : BaseActivity<LibraryImagedetailActivityPhotoDetailsBinding>() {
+class PhotoDetailsActivity : BaseActivity() {
   companion object {
     fun start(context: Context?, sharedElement: View) {
       val intent = Intent(context, PhotoDetailsActivity::class.java)

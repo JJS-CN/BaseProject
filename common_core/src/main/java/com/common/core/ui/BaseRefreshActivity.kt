@@ -10,8 +10,8 @@ import androidx.viewbinding.ViewBinding
  *  Other:
  *  Create by jsji on  2021/7/2.
  */
-abstract class BaseRefreshActivity<VB : ViewBinding> : BaseActivity<VB>() {
-    protected var swipeRefresh: SwipeRefreshLayout? = null
+abstract class BaseRefreshActivity : BaseActivity() {
+   /* protected var swipeRefresh: SwipeRefreshLayout? = null
 
     override fun getRootView(): View {
         swipeRefresh = SwipeRefreshLayout(this)
@@ -28,6 +28,6 @@ abstract class BaseRefreshActivity<VB : ViewBinding> : BaseActivity<VB>() {
         super.dismissLoading()
         Log.e("TAG", "onsuccess2222:6666 ")
         swipeRefresh?.isRefreshing = false
-    }
+    }*/
 
 }

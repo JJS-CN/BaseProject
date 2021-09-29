@@ -22,8 +22,7 @@ import java.lang.reflect.ParameterizedType
  *  Create by jsji on  2021/6/30.
  */
 
-abstract class BaseFragment<VB : ViewBinding> : Fragment(), IUIActionEventObserver {
-  protected lateinit var binding: VB
+abstract class BaseFragment : Fragment(), IUIActionEventObserver {
   protected var rootView: View? = null
 
   private var isFragmentViewInit = false
@@ -34,8 +33,6 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IUIActionEventObserv
     savedInstanceState: Bundle?
   ): View? {
     if(rootView == null) {
-      bindingView(container, javaClass)
-      rootView = binding.root
     } else {
       (rootView!!.parent as? ViewGroup)?.removeView(rootView)
     }
@@ -53,33 +50,6 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IUIActionEventObserv
     }
   }
 
-  @Suppress("UNCHECKED_CAST")
-  private fun bindingView(container: ViewGroup?, clazz: Class<*>) {
-    println("bindingFragment: 开始尝试解析：$clazz")
-    if(clazz is BaseFragment<*>) {
-      println("bindingFragment: 此class为Base,return")
-      return
-    }
-    try {
-      val superclass = clazz.genericSuperclass
-      val aClass = (superclass as ParameterizedType).actualTypeArguments[0] as Class<*>
-      val method = aClass.getDeclaredMethod(
-        "inflate",
-        LayoutInflater::class.java,
-        ViewGroup::class.java,
-        Boolean::class.javaPrimitiveType
-      )
-      println("bindingFragment: 解析成功：$clazz")
-      binding = method.invoke(null, layoutInflater, container, false) as VB
-    } catch(e: Exception) {
-      if(e is ClassCastException) {
-        println("bindingFragment: ClassCastException错误，尝试遍历superclass")
-        bindingView(container, clazz.superclass)
-      } else {
-        e.printStackTrace()
-      }
-    }
-  }
 
   override fun onAttach(context: Context) {
     super.onAttach(context)

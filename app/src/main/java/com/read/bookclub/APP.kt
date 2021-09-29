@@ -41,7 +41,7 @@ class APP : BaseApplication() {
     ActivityUtils.addActivityLifecycleCallbacks(object : Utils.ActivityLifecycleCallbacks() {
       override fun onActivityStarted(activity: Activity) {
         super.onActivityStarted(activity)
-        if(activity is BaseActivity<*>) {
+        if(activity is BaseActivity) {
           //在create中调用无效,所以在此设置
           UltimateBarX.with(activity)
             .color(Color.WHITE)

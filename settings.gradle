@@ -9,3 +9,4 @@ include ':library_zego'
 include ':library_oss'
 include ':library_netease'
 include ':library_imagedetail'
+includeBuild("./VersionPlugin")

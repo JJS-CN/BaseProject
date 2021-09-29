@@ -2,12 +2,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
-    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    compileSdkVersion BuildVersion.compileSdkVersion
+    buildToolsVersion BuildVersion.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion rootProject.ext.android.minSdkVersion
-        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        minSdkVersion BuildVersion.minSdkVersion
+        targetSdkVersion BuildVersion.targetSdkVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -26,13 +26,20 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        useIR = true
     }
     buildFeatures {
-        viewBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerVersion = "$kotlin_version"
+        kotlinCompilerExtensionVersion = "$compose_version"
     }
     resourcePrefix "${project.name}_"
 }
 
 dependencies {
     api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    //向各模块添加compose运行能力
+    debugApi Deps.compose_ui_tooling
 }

@@ -1,3 +1,4 @@
+import com.hi.dhl.plugin.*
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -10,13 +11,13 @@ kapt {
     }
 }
 android {
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.read.bookclub"
-        minSdkVersion rootProject.ext.android.minSdkVersion
+        minSdkVersion BuildVersion.minSdkVersion
 
-        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        targetSdkVersion BuildVersion.targetSdkVersion
         //前3位版本号，后3位提测版本号
         versionCode 100000
         versionName "1.0.0"
@@ -64,11 +65,15 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        useIR = true
     }
     buildFeatures {
-        viewBinding = true
+        compose = true
     }
-
+    composeOptions {
+        kotlinCompilerVersion = "$kotlin_version"
+        kotlinCompilerExtensionVersion = "$compose_version"
+    }
 }
 
 dependencies {
@@ -76,6 +81,6 @@ dependencies {
     implementation project(path: ':library_bugly')
     implementation project(path: ':library_oss')
     implementation project(path: ':library_share')
-    kapt rootProject.ext.dependencies["Component-compiler"]
+    kapt Deps.Component_compiler
 
 }

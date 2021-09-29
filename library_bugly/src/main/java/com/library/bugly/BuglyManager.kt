@@ -1,7 +1,6 @@
 package com.library.bugly
 
 import android.app.Application
-import androidx.viewbinding.BuildConfig
 import com.tencent.bugly.Bugly
 
 /**

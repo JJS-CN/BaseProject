@@ -4,9 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.ViewGroup
-import com.common.core.R
+import androidx.activity.compose.setContent
+import androidx.compose.material.Text
 import com.common.core.constants.BaseSchemeActions
-import com.common.core.databinding.CommonCoreLayoutFrameEmptyBinding
 import com.common.core.ui.web.BaseWebViewActivity
 import java.lang.Exception
 
@@ -16,12 +16,7 @@ import java.lang.Exception
  *  Other:
  *  Create by jsji on  2021/7/12.
  */
-abstract class BaseSchemeActivity : BaseActivity<CommonCoreLayoutFrameEmptyBinding>() {
-
-
-  init {
-    needAutoTitleBar = false
-  }
+abstract class BaseSchemeActivity : BaseActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -84,7 +79,9 @@ abstract class BaseSchemeActivity : BaseActivity<CommonCoreLayoutFrameEmptyBindi
    * 提示用户更新版本
    */
   open fun showUpdateTip() {
-    setContentView(R.layout.common_core_layout_version_update)
+    setContent {
+      Text(text = "版本过低，请前往各大应用市场更新版本！")
+    }
   }
 
   open fun openUrlInApp(uri: Uri) {

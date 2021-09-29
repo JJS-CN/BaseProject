@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import com.common.core.R
-import com.common.core.databinding.CommonCoreLayoutFrameEmptyBinding
 import com.common.core.ui.BaseActivity
 
 /**
@@ -13,7 +12,7 @@ import com.common.core.ui.BaseActivity
  *  Other:
  *  Create by jsji on  2021/7/12.
  */
-class BaseWebViewActivity : BaseActivity<CommonCoreLayoutFrameEmptyBinding>() {
+class BaseWebViewActivity : BaseActivity() {
   companion object {
     val KEY_URL = "KEY_URL"
 
@@ -45,10 +44,10 @@ class BaseWebViewActivity : BaseActivity<CommonCoreLayoutFrameEmptyBinding>() {
     return webFragment
   }
 
-  override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+/*  override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
     if(webFragment.onKeyDown(keyCode)) {
       return true
     }
     return super.onKeyDown(keyCode, event)
-  }
+  }*/
 }
