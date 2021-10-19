@@ -4,9 +4,12 @@ import android.util.LruCache
 import com.common.core.BuildConfig
 import com.common.core.network.base.BaseUrlCallFactory
 import com.common.core.network.callback.RequestCallback
+import com.common.core.network.converter.MoshiConverterFactory
 import com.common.core.network.coroutine.ICoroutineEvent
 import com.common.core.network.exception.ApiException
 import com.common.core.network.viewmodel.IUIActionEvent
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.GlobalScope
 import okhttp3.Call
@@ -65,11 +68,12 @@ abstract class BaseRemoteDataSource<Api : Any>(
      * 构建默认的 Retrofit
      */
     private fun createDefaultRetrofit(baseUrl: String, callFactory: Call.Factory): Retrofit {
+      val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
       return Retrofit.Builder()
         .client(defaultOkHttpClient)
         .baseUrl(baseUrl)
         .callFactory(callFactory)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(retrofit2.converter.moshi.MoshiConverterFactory.create(moshi))
         .build()
     }
 

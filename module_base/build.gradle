@@ -10,4 +10,6 @@ dependencies {
     api project(':library_zego')
     api project(':library_netease')
     api project(':library_imagedetail')
+
+    kapt Deps.moshi_kotlin_codegen
 }

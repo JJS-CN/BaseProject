@@ -7,19 +7,22 @@ import com.common.core.network.bean.IHttpWrapBean
  *  Other:
  *  Create by jsji on  2021/7/1.
  */
-data class BaseResponse<T>(val code: Int = 0, val msg: String = "", val data: T) :
+data class BaseResponse<T>(val infocode: Int = 0,
+                           val info: String = "",
+                           val status: Int = 0,
+                           val data: T?) :
   IHttpWrapBean<T> {
   override val httpCode: Int
-    get() = code
+    get() = infocode
 
   override val httpMsg: String
-    get() = msg
+    get() = info
 
-  override val httpData: T
+  override val httpData: T?
     get() = data
 
   //网络请求是否成功
   override val httpIsSuccess: Boolean
-    get() = code == 0
+    get() = infocode == 0
 
 }

@@ -32,7 +32,7 @@ fun AppTitleBar(
   @DrawableRes actionIcon: Int? = null,
   onActionBack: (() -> Unit)? = {},
   onClickBack: (() -> Unit)? = null) {
-  Column(Modifier.height(30.dp)) {
+  Column(Modifier.height(40.dp)) {
     TopAppBar(title = {
       Text(
         text = title,
@@ -40,7 +40,7 @@ fun AppTitleBar(
         fontSize = 18.sp,
         color = Color.Black
       )
-    },
+    }, backgroundColor = Color.White,
       navigationIcon = {
         IconButton(onClick = {
           if(onClickBack == null) {

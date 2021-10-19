@@ -56,7 +56,7 @@ abstract class RemoteDataSource<Api : Any>(
           handleException(throwable, callback)
           return@launch
         }
-        onGetResponse(callback, response.httpData)
+        onGetResponse(callback, response)
       } finally {
         try {
           callback?.onFinally?.invoke()
@@ -69,7 +69,7 @@ abstract class RemoteDataSource<Api : Any>(
     }
   }
 
-  private suspend fun <Data> onGetResponse(callback: RequestCallback<Data>?, httpData: Data) {
+  private suspend fun <Data> onGetResponse(callback: RequestCallback<Data>?, httpData: IHttpWrapBean<Data>) {
     callback?.let {
       withContext(NonCancellable) {
         callback.onSuccess?.let {
@@ -78,7 +78,7 @@ abstract class RemoteDataSource<Api : Any>(
             //所以在data可能为空、或者不关心回调内容时，需要设置BaseResponse<*> 、 BaseResponse<Any?>
             //这里的* 和Any? 是一样的效果
             try {
-              it.invoke(httpData)
+              httpData.httpData?.let { it1 -> it.invoke(it1) }
             } catch(e: Exception) {
               Log.e(TAG, "invoke错误：" + e.message)
               e.printStackTrace()
@@ -89,7 +89,7 @@ abstract class RemoteDataSource<Api : Any>(
           withContext(Dispatchers.IO) {
             try {
               //如果值为空，invoke动态代理将会报错。因为定义的success接收值中是非空的。
-              it.invoke(httpData)
+              it.invoke(httpData.httpData)
             } catch(e: Exception) {
               Log.e(TAG, "invoke错误：" + e.message)
               e.printStackTrace()
@@ -115,7 +115,7 @@ abstract class RemoteDataSource<Api : Any>(
         }
         val response = asyncIO.await()
         if(response.httpIsSuccess) {
-          return@runBlocking response.httpData
+          return@runBlocking response.httpData!!
         }
         throw ApiException(response.httpCode, response.httpMsg)
       } catch(throwable: Throwable) {

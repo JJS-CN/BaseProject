@@ -7,22 +7,23 @@ package com.hi.dhl.plugin
  */
 object Versions {
   val arouterVersion = "1.5.2"
-  val ComponentVersion = "v1.9.0-androidx-java8-Stable2"
+  val ComponentVersion = "v1.9.2-androidx-java8"
   val lifecycleVersion = "2.3.1"
-  val coilVersion = "1.2.2"
+  val coilVersion = "1.3.2"
   val roomVersion = "2.3.0"
   val navigationVersion = "2.4.0-alpha04"
   val composeVersion = "1.0.1"
+  val accompanistVersion = "0.18.0"
 }
 
 object Deps {
   val multidex = "androidx.multidex:multidex:2.0.1"
   val appcompat = "androidx.appcompat:appcompat:1.3.0"
 
-  val material = "com.google.android.material:material:1.2.1"
+  val material = "com.google.android.material:material:1.4.0"
   val cardview = "androidx.cardview:cardview:1.0.0"
   val annotation = "androidx.annotation:annotation:1.2.0"
-  val recyclerview = "androidx.recyclerview:recyclerview:1.2.0"
+  val recyclerview = "androidx.recyclerview:recyclerview:1.2.1"
   val swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
   val constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.4"
   val coordinatorlayout = "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
@@ -42,7 +43,8 @@ object Deps {
   //kotlin支持
   val core_ktx = "androidx.core:core-ktx:1.6.0"
   val kotlinx_coroutines_android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
-  val lifecycle_runtime_ktx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleVersion}"
+  val lifecycle_runtime_ktx =
+    "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleVersion}"
   val lifecycle_viewmodel_ktx =
     "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleVersion}"
   val lifecycleL_livedata_ktx =
@@ -54,7 +56,7 @@ object Deps {
   val BRVAH = "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.6"
 
   //向xml中附加shape自定义标签属性 https://github.com/JavaNoober/BackgroundLibrary/wiki
-  val BackgroundLibrary = "com.github.JavaNoober.BackgroundLibrary:libraryx:1.7.2"
+  val backgroundLibrary = "com.github.JavaNoober.BackgroundLibrary:libraryx:1.7.2"
 
   //MMKV基于mmap的高性能kv存储 https://github.com/Tencent/MMKV
   val mmkv = "com.tencent:mmkv-static:1.2.10"
@@ -76,9 +78,10 @@ object Deps {
 
   //图片请求库 https://coil-kt.github.io/coil/
   val coil = "io.coil-kt:coil:${Versions.coilVersion}"
-  val coilGif = "io.coil-kt:coil-gif:${Versions.coilVersion}"
-  val coilSvg = "io.coil-kt:coil-svg:${Versions.coilVersion}"
-  val coilVideo = "io.coil-kt:coil-video:${Versions.coilVersion}"
+  val coil_gif = "io.coil-kt:coil-gif:${Versions.coilVersion}"
+  val coil_svg = "io.coil-kt:coil-svg:${Versions.coilVersion}"
+  val coil_video = "io.coil-kt:coil-video:${Versions.coilVersion}"
+  val coil_compose = "io.coil-kt:coil-compose:${Versions.coilVersion}"
 
   //图片压缩库 https://github.com/zetbaitsu/Compressor
   val compressor = "id.zelory:compressor:3.0.1"
@@ -96,7 +99,7 @@ object Deps {
   val DialogX = "com.github.kongzue.DialogX:DialogX:0.0.39"
 
   //basePopup  https://github.com/razerdp/BasePopup
-  val BasePopup = "io.github.razerdp:BasePopup:3.1.0"
+  val basePopup = "io.github.razerdp:BasePopup:3.1.0"
 
 
   //组件化路由
@@ -116,7 +119,7 @@ object Deps {
   val converter_gson = "com.squareup.retrofit2:converter-gson:2.9.0"
   val converter_moshi = "com.squareup.retrofit2:converter-moshi:2.9.0"
   val moshi_kotlin_codegen = "com.squareup.moshi:moshi-kotlin-codegen:1.12.0"
-  val moshi_kotlin = "com.squareup.moshi:moshi-kotlin:1.11.0"
+  val moshi_kotlin = "com.squareup.moshi:moshi-kotlin:1.12.0"
 
   val converter_serialization =
     "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
@@ -133,7 +136,11 @@ object Deps {
   val compose_activity = "androidx.activity:activity-compose:1.3.1"
 
   // 使用Coil加载图片时导入
-  val accompanist_coil = "com.google.accompanist:accompanist-coil:0.15.0"
+  val accompanist_coil = "com.google.accompanist:accompanist-coil:${Versions.accompanistVersion}"
+  val accompanist_swiperefresh =
+    "com.google.accompanist:accompanist-swiperefresh:${Versions.accompanistVersion}"
+  val accompanist_systemuicontroller =
+    "com.google.accompanist:accompanist-systemuicontroller:${Versions.accompanistVersion}"
   // 使用Glide加载图片时导入
   //implementation("com.google.accompanist:accompanist-glide:0.14.0")
 

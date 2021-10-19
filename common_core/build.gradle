@@ -35,18 +35,19 @@ dependencies {
     api("com.squareup.okhttp3:logging-interceptor")
     api Deps.retrofit2
     //todo 如果服务器对应字段返回空，gson无法初始化默认值，这个需注意
-    api Deps.converter_gson
+    //api Deps.converter_gson
 
     //todo moshi在BaseResponse<T> 时，无法对泛型T进行处理，所以仍使用Gson
-    //api Deps.converter-moshi
-    //kapt Deps.moshi-kotlin-codegen
-    //api Deps.moshi-kotlin
+    api Deps.converter_moshi
+    kapt Deps.moshi_kotlin_codegen
+    api Deps.moshi_kotlin
 
     api Deps.Android_CN_OAID
     api Deps.utilcodex
     api Deps.autosize
     api Deps.coil
-    api Deps.coilGif
+    api Deps.coil_gif
+    api Deps.coil_compose
     //感觉可以单独出去，无需要的就不用引入 pictureselector集成了luban和ucrop和photoView
     //api Deps.compressor
     //api Deps.ucrop
@@ -55,10 +56,10 @@ dependencies {
     api Deps.ultimatebarx
     api Deps.mmkv
     api Deps.broccoli
-    api Deps.BasePopup
+    api Deps.basePopup
     api Deps.tbssdk
 
-    api Deps.BackgroundLibrary
+    api Deps.backgroundLibrary
     api Deps.BRVAH
     api Deps.permissionx
 
@@ -70,7 +71,7 @@ dependencies {
     api Deps.compose_material
     api Deps.compose_ui_tooling_preview
     api Deps.compose_activity
-    api Deps.accompanist_coil
+    //api Deps.accompanist_coil
 
     // UI 测试
     androidTestApi Deps.compose_ui_test_junit4

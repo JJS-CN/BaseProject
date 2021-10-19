@@ -21,7 +21,7 @@ interface IHttpWrapBean<Data> {
   /**
    * 服务器返回的实际数据
    */
-  val httpData: Data
+  val httpData: Data?
 
   /**
    * 交由外部来判断当前接口是否请求成功

@@ -12,7 +12,7 @@ import com.common.core.network.exception.ApiException
 open class RequestCallback<Data>(
   internal var onStart: (() -> Unit)? = null,
   internal var onSuccess: ((Data) -> Unit)? = null,
-  internal var onSuccessIO: (suspend (Data) -> Unit)? = null,
+  internal var onSuccessIO: (suspend (Data?) -> Unit)? = null,
   internal var onCancelled: (() -> Unit)? = null,
   internal var onError: ((Throwable) -> Unit)? = null,
   internal var onApiError: ((ApiException) -> Unit)? = null,
@@ -52,7 +52,7 @@ open class RequestCallback<Data>(
    * 注意外部不要在此处另开子线程，此方法会等到耗时任务完成后再执行 onFinally 方法
    * 为空时也应执行
    */
-  fun onSuccessIO(block: suspend (Data) -> Unit) {
+  fun onSuccessIO(block: suspend (Data?) -> Unit) {
     this.onSuccessIO = block
   }
 
