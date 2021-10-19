@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Text
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
@@ -31,13 +33,14 @@ import org.w3c.dom.Text
 @RouterAnno(hostAndPath = RouteAction.User.PATH_SPLASH)
 class SplashActivity : BaseSplashActivity() {
 
-  var titles = "1234"
+  //用来标识他是一个有状态的数据，类似livedata观察者模式
+  var titles = mutableStateOf("1234")
   override fun onSplash(savedInstanceState: Bundle?) {
 
 
     setContent {
       Column() {
-        AppTitleBar(activity = this@SplashActivity, title = titles)
+        AppTitleBar(activity = this@SplashActivity, title = titles.value)
         Image(
           painter = rememberImagePainter("https://img0.baidu.com/it/u=312301072,1324966529&fm=26&fmt=auto&gp=0.jpg"),
           contentDescription = null,
@@ -47,7 +50,7 @@ class SplashActivity : BaseSplashActivity() {
         )
         Button(onClick = {
           print("点击按钮")
-          titles = "12"
+          titles.value = "12"
           AppDataSource(null).enqueue({ getAudioConf() }) {
             onStart {
               Log.e("3333", "onStart")
