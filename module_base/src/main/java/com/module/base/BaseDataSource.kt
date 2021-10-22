@@ -8,6 +8,7 @@ import com.common.core.network.base.BaseUrlCallFactory
 import com.common.core.network.viewmodel.IUIActionEvent
 import com.common.core.manager.UUIDManager
 import com.common.core.network.datasource.RemoteDataSource
+import com.module.base.network.SERVICE_TYPE
 import okhttp3.*
 import java.util.concurrent.TimeUnit
 
@@ -104,7 +105,7 @@ open class BaseDataSource<Api : Any>(
 
   override fun createCallFactory(): BaseUrlCallFactory {
     return super.createCallFactory().apply {
-      addServiceUrlPair("USER", "https://restapi.amap.com/")
+      addServiceUrlPair(SERVICE_TYPE.USER.name, SERVICE_TYPE.USER.baseUrl)
     }
   }
 
