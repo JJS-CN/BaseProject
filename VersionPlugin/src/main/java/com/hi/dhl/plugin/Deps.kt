@@ -9,7 +9,7 @@ object Versions {
   val arouterVersion = "1.5.2"
   val ComponentVersion = "v1.9.2-androidx-java8"
   val lifecycleVersion = "2.3.1"
-  val coilVersion = "1.3.2"
+  val coilVersion = "1.4.0"
   val roomVersion = "2.3.0"
   val navigationVersion = "2.4.0-alpha04"
   val composeVersion = "1.0.1"
@@ -52,20 +52,23 @@ object Deps {
 
 
   //第三方框架
-  val permissionx = "com.permissionx.guolindev:permissionx:1.4.0"
-  val BRVAH = "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.6"
+
+  //权限申请框架 https://github.com/guolindev/PermissionX
+  val permissionx = "com.guolindev.permissionx:permissionx:1.6.1"
+  //adapter适配器 https://github.com/CymChad/BaseRecyclerViewAdapterHelper
+  val BRVAH = "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7"
 
   //向xml中附加shape自定义标签属性 https://github.com/JavaNoober/BackgroundLibrary/wiki
   val backgroundLibrary = "com.github.JavaNoober.BackgroundLibrary:libraryx:1.7.2"
 
   //MMKV基于mmap的高性能kv存储 https://github.com/Tencent/MMKV
-  val mmkv = "com.tencent:mmkv-static:1.2.10"
+  val mmkv = "com.tencent:mmkv-static:1.2.11"
 
   //沉浸式状态栏 https://github.com/Zackratos/UltimateBarX
-  val ultimatebarx = "com.zackratos.ultimatebarx:ultimatebarx:0.6.0"
+  val ultimatebarx = "com.gitee.zackratos:UltimateBarX:v0.8.0"
 
   //唯一设备标识码OAID获取 https://github.com/gzu-liyujiang/Android_CN_OAID
-  val Android_CN_OAID = "com.github.gzu-liyujiang:Android_CN_OAID:4.2.1"
+  val Android_CN_OAID = "com.github.gzu-liyujiang:Android_CN_OAID:4.2.3"
 
   //基础库+自带混淆 https://github.com/Blankj/AndroidUtilCode
   val utilcodex = "com.blankj:utilcodex:1.30.6"
@@ -92,14 +95,14 @@ object Deps {
   //图片选择库 https://github.com/LuckSiege/PictureSelector/ 此框架包含photoView和Luban和uCrop
   val pictureselector = "io.github.lucksiege:pictureselector:v2.7.3-rc06"
 
-  //加载中占位骨架
+  //加载中占位骨架 https://github.com/samlss/Broccoli
   val broccoli = "me.samlss:broccoli:1.0.0"
 
   //dialog需要5.0，并且正在开发中，不是很稳定 https://github.com/kongzue/DialogX
-  val DialogX = "com.github.kongzue.DialogX:DialogX:0.0.39"
+  val DialogX = "com.github.kongzue.DialogX:DialogX:0.0.43.beta19"
 
   //basePopup  https://github.com/razerdp/BasePopup
-  val basePopup = "io.github.razerdp:BasePopup:3.1.0"
+  val basePopup = "io.github.razerdp:BasePopup:3.2.0"
 
 
   //组件化路由
@@ -114,16 +117,18 @@ object Deps {
   //如果新增路由出问题InstantRun support error，debug运行需要卸载重装！！！！！！！！！！！！！！！！！！
   /*   "arouter-api"               ="com.alibaba:arouter-api:${Versions.arouterVersion}"
      "arouter-compiler"          ="com.alibaba:arouter-compiler:${Versions.arouterVersion}"*/
-  //网络请求
+  //网络基础库 https://github.com/square/okhttp
+  val okhttp_bom = "com.squareup.okhttp3:okhttp-bom:4.9.2"
+  //网络包装库 https://github.com/square/retrofit
   val retrofit2 = "com.squareup.retrofit2:retrofit:2.9.0"
   val converter_gson = "com.squareup.retrofit2:converter-gson:2.9.0"
   val converter_moshi = "com.squareup.retrofit2:converter-moshi:2.9.0"
+  //序列化
   val moshi_kotlin_codegen = "com.squareup.moshi:moshi-kotlin-codegen:1.12.0"
   val moshi_kotlin = "com.squareup.moshi:moshi-kotlin:1.12.0"
 
   val converter_serialization =
     "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
-  val okhttp_bom = "com.squareup.okhttp3:okhttp-bom:4.9.1"
 
   //webview
   val tbssdk = "com.tencent.tbs.tbssdk:sdk:43939"
@@ -135,7 +140,7 @@ object Deps {
     "androidx.compose.ui:ui-tooling-preview:${Versions.composeVersion}"
   val compose_activity = "androidx.activity:activity-compose:1.3.1"
 
-  // 使用Coil加载图片时导入
+  // 使用Coil加载图片时导入 新版coil默认支持
   val accompanist_coil = "com.google.accompanist:accompanist-coil:${Versions.accompanistVersion}"
   val accompanist_swiperefresh =
     "com.google.accompanist:accompanist-swiperefresh:${Versions.accompanistVersion}"

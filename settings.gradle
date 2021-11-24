@@ -1,4 +1,4 @@
-rootProject.name = "BookRead"
+rootProject.name = "BaseProject"
 include ':app'
 include ':common_core'
 include ':module_base'
